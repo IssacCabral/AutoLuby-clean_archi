@@ -2,7 +2,25 @@ import { VehicleModel } from '@domain/models/vehicle'
 import { CreateVehicleParams } from '@domain/types/create-vehicle-params'
 import { ICreateVehicle } from '@domain/usecases/create-vehicle'
 import { MissingParamError } from '@errors/missing-param-error'
+import { ServerError } from '@errors/server-error'
+import { HttpRequest } from '@protocols/http'
 import {CreateVehicleController} from './create-vehicle-controller'
+
+const makeFakeCreateRequest = (): HttpRequest => {
+  return {
+    body:{
+      brand: "any_brand",
+      chassis: "any_chassis",
+      color: "any_color",
+      cost_price: 0,
+      sale_price: 0,
+      km: 0,
+      model: "any_model",
+      status: "any_status",
+      year: 2000,
+    }
+  };
+};
 
 const makeCreateVehicle = (): ICreateVehicle => {
   class CreateVehicleStub implements ICreateVehicle{
@@ -213,4 +231,13 @@ describe('CreateVehicle Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('cost_price'))
   })
 
+  test('Should return 500 if CreateVehicle throws', async () => {
+    const {sut, createVehicleStub} = makeSut()
+    jest.spyOn(createVehicleStub, 'create').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeCreateRequest())
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
 })

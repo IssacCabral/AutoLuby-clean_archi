@@ -1,6 +1,6 @@
 import { IController } from "@protocols/controller";
 import { HttpRequest, HttpResponse } from "@protocols/http";
-import { badRequest, serverError } from "@helpers/http-helper";
+import { badRequest, created, serverError } from "@helpers/http-helper";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ICreateVehicle } from "@domain/usecases/create-vehicle";
 
@@ -20,14 +20,13 @@ export class CreateVehicleController implements IController {
         "sale_price",
         "cost_price",
       ];
-
       for(const field of requiredFields){
         if (!Object.keys(httpRequest.body).includes(field)) {
-          console.log(field)
           return badRequest(new MissingParamError(field));
         }
       }
-      return null
+      const vehicle = await this.createVehicle.create(httpRequest.body)
+      return created(vehicle)
     } catch (error) {
       return serverError(error);
     }
