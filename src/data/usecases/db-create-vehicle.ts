@@ -9,8 +9,8 @@ export class DbCreateVehicle implements ICreateVehicle{
   ) {}
 
   async create(params: CreateVehicleParams): Promise<VehicleModel | Error> {
-    await this.createVehicleRepository.create(params)
-    return null
+    const vehicle = await this.createVehicleRepository.create(params)
+    return vehicle
   }
 
 }

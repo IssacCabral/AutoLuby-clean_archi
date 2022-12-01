@@ -5,14 +5,14 @@ import { DbCreateVehicle } from "./db-create-vehicle";
 
 const makeFakeCreateVehicleParams = (): CreateVehicleParams => {
   return {
-    brand: "valid_brand",
-    chassis: "valid_chassis",
-    color: "valid_color",
+    brand: "any_brand",
+    chassis: "any_chassis",
+    color: "any_color",
     cost_price: 0,
     sale_price: 0,
     km: 0,
-    model: "valid_model",
-    status: "valid_status",
+    model: "any_model",
+    status: "any_status",
     year: 2000,
   };
 };
@@ -21,15 +21,15 @@ const makeCreateVehicleRepository = (): CreateVehicleRepository => {
   class CreateVehicleRepositoryStub implements CreateVehicleRepository {
     async create(vehicleData: CreateVehicleParams): Promise<VehicleModel> {
       const fakeVehicle: VehicleModel = {
-        id: "valid_id",
-        brand: "valid_brand",
-        chassis: "valid_chassis",
-        color: "valid_color",
+        id: "any_id",
+        brand: "any_brand",
+        chassis: "any_chassis",
+        color: "any_color",
         cost_price: 0,
         sale_price: 0,
         km: 0,
-        model: "valid_model",
-        status: "valid_status",
+        model: "any_model",
+        status: "any_status",
         year: 2000,
         createdAt: new Date(2022, 9, 1),
         updatedAt: new Date(2022, 9, 1),
@@ -55,20 +55,20 @@ const makeSut = (): SutTypes => {
 };
 
 describe("DbCreateVehicle UseCase", () => {
-  test("Should call CreateVehicleRepository with correct values", async () => {
+  test("Should calls CreateVehicleRepository with correct values", async () => {
     const { sut, createVehicleRepositoryStub } = makeSut();
     const createSpy = jest.spyOn(createVehicleRepositoryStub, "create");
     const createVehicleParams: CreateVehicleParams = makeFakeCreateVehicleParams();
     await sut.create(createVehicleParams);
     expect(createSpy).toHaveBeenCalledWith({
-      brand: "valid_brand",
-      chassis: "valid_chassis",
-      color: "valid_color",
+      brand: "any_brand",
+      chassis: "any_chassis",
+      color: "any_color",
       cost_price: 0,
       sale_price: 0,
       km: 0,
-      model: "valid_model",
-      status: "valid_status",
+      model: "any_model",
+      status: "any_status",
       year: 2000,
     });
   });
@@ -81,5 +81,15 @@ describe("DbCreateVehicle UseCase", () => {
     const createVehicleParams: CreateVehicleParams = makeFakeCreateVehicleParams()
     const promise = sut.create(createVehicleParams)
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return a vehicle on success ', async () => {
+    const {sut} = makeSut()
+    const createVehicleParams: CreateVehicleParams = makeFakeCreateVehicleParams();
+    const vehicle = await sut.create(createVehicleParams) as VehicleModel
+    expect(vehicle).toBeTruthy()
+    expect(vehicle.id).toBeTruthy()
+    expect(vehicle.brand).toBe('any_brand')
+    expect(vehicle.chassis).toBe('any_chassis')
   })
 });
