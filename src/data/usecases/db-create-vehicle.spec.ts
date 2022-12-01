@@ -72,5 +72,14 @@ describe("DbCreateVehicle UseCase", () => {
       year: 2000,
     });
   });
-  
+
+  test('Should throw if CreateVehicleRepository throws', async() => {
+    const {sut, createVehicleRepositoryStub} = makeSut()
+    jest.spyOn(createVehicleRepositoryStub, 'create').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const createVehicleParams: CreateVehicleParams = makeFakeCreateVehicleParams()
+    const promise = sut.create(createVehicleParams)
+    await expect(promise).rejects.toThrow()
+  })
 });
