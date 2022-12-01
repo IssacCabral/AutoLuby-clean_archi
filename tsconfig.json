@@ -12,6 +12,7 @@
       "@domain/*": ["./src/domain/*"],
       "@errors/*": ["./src/presentation/errors/*"],
       "@protocols/*": ["./src/presentation/protocols/*"],
+      "@helpers/*": ["./src/presentation/helpers/*"]
     }
   }
 }
