@@ -1,6 +1,6 @@
 import { VehicleModel } from "@domain/models/vehicle";
 import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
-import { CreateVehicleRepository } from "../protocols/create-vehicle-repository";
+import { ICreateVehicleRepository } from "../protocols/create-vehicle-repository";
 import { DbCreateVehicle } from "./db-create-vehicle";
 
 const makeFakeCreateVehicleParams = (): CreateVehicleParams => {
@@ -17,8 +17,8 @@ const makeFakeCreateVehicleParams = (): CreateVehicleParams => {
   };
 };
 
-const makeCreateVehicleRepository = (): CreateVehicleRepository => {
-  class CreateVehicleRepositoryStub implements CreateVehicleRepository {
+const makeCreateVehicleRepository = (): ICreateVehicleRepository => {
+  class CreateVehicleRepositoryStub implements ICreateVehicleRepository {
     async create(vehicleData: CreateVehicleParams): Promise<VehicleModel> {
       const fakeVehicle: VehicleModel = {
         id: "any_id",
@@ -42,7 +42,7 @@ const makeCreateVehicleRepository = (): CreateVehicleRepository => {
 
 interface SutTypes {
   sut: DbCreateVehicle;
-  createVehicleRepositoryStub: CreateVehicleRepository;
+  createVehicleRepositoryStub: ICreateVehicleRepository;
 }
 
 const makeSut = (): SutTypes => {

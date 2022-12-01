@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@domain/*": ["./src/domain/*"],
-      "@protocols/*": ["protocols/*"]
+      "@errors/*": ["./src/presentation/errors/*"],
+      "@protocols/*": ["./src/presentation/protocols/*"],
     }
   }
 }

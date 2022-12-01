@@ -1,11 +1,11 @@
 import { VehicleModel } from "../../domain/models/vehicle";
 import { CreateVehicleParams } from "../../domain/types/create-vehicle-params";
 import { ICreateVehicle } from "../../domain/usecases/create-vehicle";
-import { CreateVehicleRepository } from "../protocols/create-vehicle-repository";
+import { ICreateVehicleRepository } from "../protocols/create-vehicle-repository";
 
 export class DbCreateVehicle implements ICreateVehicle{
   constructor(
-    private readonly createVehicleRepository: CreateVehicleRepository
+    private readonly createVehicleRepository: ICreateVehicleRepository
   ) {}
 
   async create(params: CreateVehicleParams): Promise<VehicleModel | Error> {
