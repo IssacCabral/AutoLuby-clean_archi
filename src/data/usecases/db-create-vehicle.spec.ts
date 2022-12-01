@@ -1,5 +1,5 @@
-import { VehicleModel } from "../../domain/models/vehicle";
-import { CreateVehicleParams } from "../../domain/types/create-vehicle-params";
+import { VehicleModel } from "@domain/models/vehicle";
+import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
 import { CreateVehicleRepository } from "../protocols/create-vehicle-repository";
 import { DbCreateVehicle } from "./db-create-vehicle";
 
@@ -83,7 +83,7 @@ describe("DbCreateVehicle UseCase", () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return a vehicle on success ', async () => {
+  test('Should return a vehicle on success', async () => {
     const {sut} = makeSut()
     const createVehicleParams: CreateVehicleParams = makeFakeCreateVehicleParams();
     const vehicle = await sut.create(createVehicleParams) as VehicleModel

@@ -6,6 +6,11 @@
     "esModuleInterop": true, // os módulos que ainda usam commonjs, se a gente usar import ou export, vai funcionar pois será convertido internamente
     "allowJs": true, // se houverem arquivos de configuração javascript, eles também serão incluídos na pasta definida em "outDir" após serem compilados,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["./src/domain/*"],
+      "@protocols/*": ["protocols/*"]
+    }
   }
 }
