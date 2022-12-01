@@ -21,14 +21,8 @@ export class CreateVehicleController implements IController {
         "cost_price",
       ];
 
-      // for(let i = 0; i < requiredFields.length; i++){
-      //   if (httpRequest.body[requiredFields[i]] == undefined) {
-      //     return badRequest(new MissingParamError(requiredFields[i]));
-      //   }
-      // }
-
       for(const field of requiredFields){
-        if (httpRequest.body[field] == undefined) {
+        if (!Object.keys(httpRequest.body).includes(field)) {
           console.log(field)
           return badRequest(new MissingParamError(field));
         }
