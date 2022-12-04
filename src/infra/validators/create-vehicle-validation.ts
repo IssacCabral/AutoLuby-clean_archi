@@ -1,10 +1,24 @@
+import { MissingParamError } from "@errors/missing-param-error";
 import { IValidation } from "@protocols/validation";
 
 export class CreateVehicleValidator implements IValidation{
-  validate(input: any): Error {
-    const {color, brand, model, sale_price, cost_price, status, year, km} = input
-    
-    throw new Error("Method not implemented.");
+  validate(input: any): Error | null{
+    const requiredFields = [
+      "color",
+      "model",
+      "brand",
+      "status",
+      "year",
+      "km",
+      "chassis",
+      "sale_price",
+      "cost_price",
+    ];
+    for(const field of requiredFields){
+      if (!Object.keys(input.body).includes(field)) {
+        return new MissingParamError(field)
+      }
+    }
   }
 
 }
