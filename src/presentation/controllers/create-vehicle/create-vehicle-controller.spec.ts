@@ -275,10 +275,17 @@ describe("CreateVehicle Controller", () => {
 
   test('Should return 400 if CreateVehicle returns a FieldInUseError', async () => {
     const {sut, createVehicleStub} = makeSut()
-    const httpRequest = makeFakeCreateVehicleRequest()
     jest.spyOn(createVehicleStub, 'create').mockReturnValueOnce(new Promise((resolve) => resolve(new FieldInUseError('chassis'))))
     const httpResponse = await sut.handle(makeFakeCreateVehicleRequest())
     expect(httpResponse).toEqual(badRequest(new FieldInUseError('chassis')))
+  })
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const {sut, createVehicleValidationStub} = makeSut()
+    jest.spyOn(createVehicleValidationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpResponse = await sut.handle(makeFakeCreateVehicleRequest())
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toBeInstanceOf(Error)
   })
 
   test("Should return 201 if valid data is provided", async () => {
