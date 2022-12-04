@@ -12,7 +12,11 @@
       "@domain/*": ["./src/domain/*"],
       "@errors/*": ["./src/presentation/errors/*"],
       "@protocols/*": ["./src/presentation/protocols/*"],
-      "@helpers/*": ["./src/presentation/helpers/*"]
+      "@helpers/*": ["./src/presentation/helpers/*"],
+      "@controllers/*": ["./src/presentation/controllers/*"],
+      "@data/*": ["./src/data/*"],
+      "@repositories/*": ["./src/infra/repositories/*"],
+      "@factories/*": ["./src/main/factories/*"]
     }
   }
 }
