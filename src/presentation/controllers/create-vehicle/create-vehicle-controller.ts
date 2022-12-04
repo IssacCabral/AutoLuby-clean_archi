@@ -5,7 +5,10 @@ import { MissingParamError } from "@errors/missing-param-error";
 import { ICreateVehicle } from "@domain/usecases/create-vehicle";
 
 export class CreateVehicleController implements IController {
-  constructor(private readonly createVehicle: ICreateVehicle) {}
+  constructor(
+    private readonly createVehicle: ICreateVehicle,
+    private readonly validation: IValidation
+  ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -25,8 +28,11 @@ export class CreateVehicleController implements IController {
           return badRequest(new MissingParamError(field));
         }
       }
-      const vehicle = await this.createVehicle.create(httpRequest.body)
-      return created(vehicle)
+      const createVehicleResult = await this.createVehicle.create(httpRequest.body)
+      if(createVehicleResult instanceof Error){
+        return badRequest(createVehicleResult)
+      }
+      return created(createVehicleResult)
     } catch (error) {
       return serverError(error);
     }

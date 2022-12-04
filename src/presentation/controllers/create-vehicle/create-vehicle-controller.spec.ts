@@ -1,12 +1,14 @@
 import { VehicleModel } from "@domain/models/vehicle";
 import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
 import { ICreateVehicle } from "@domain/usecases/create-vehicle";
+import { FieldInUseError } from "@errors/field-in-use-error";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ServerError } from "@errors/server-error";
 import { HttpRequest } from "@protocols/http";
 import { CreateVehicleController } from "./create-vehicle-controller";
+import { badRequest } from "@helpers/http-helper";
 
-const makeFakeCreateRequest = (): HttpRequest => {
+const makeFakeCreateVehicleRequest = (): HttpRequest => {
   return {
     body: {
       brand: "any_brand",
@@ -236,7 +238,7 @@ describe("CreateVehicle Controller", () => {
     jest.spyOn(createVehicleStub, "create").mockImplementationOnce(() => {
       throw new Error();
     });
-    const httpResponse = await sut.handle(makeFakeCreateRequest());
+    const httpResponse = await sut.handle(makeFakeCreateVehicleRequest());
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
@@ -244,7 +246,7 @@ describe("CreateVehicle Controller", () => {
   test("Should call CreateVehicle with correct values", async () => {
     const { sut, createVehicleStub } = makeSut();
     const createSpy = jest.spyOn(createVehicleStub, "create");
-    await sut.handle(makeFakeCreateRequest());
+    await sut.handle(makeFakeCreateVehicleRequest());
     expect(createSpy).toHaveBeenCalledWith({
       brand: "any_brand",
       chassis: "any_chassis",
@@ -257,6 +259,14 @@ describe("CreateVehicle Controller", () => {
       year: 2000,
     });
   });
+
+  test('Should return 400 if CreateVehicle returns a FieldInUseError', async () => {
+    const {sut, createVehicleStub} = makeSut()
+    const httpRequest = makeFakeCreateVehicleRequest()
+    jest.spyOn(createVehicleStub, 'create').mockReturnValueOnce(new Promise((resolve) => resolve(new FieldInUseError('chassis'))))
+    const httpResponse = await sut.handle(makeFakeCreateVehicleRequest())
+    expect(httpResponse).toEqual(badRequest(new FieldInUseError('chassis')))
+  })
 
   test("Should return 201 if valid data is provided", async () => {
     const { sut } = makeSut();
@@ -273,7 +283,7 @@ describe("CreateVehicle Controller", () => {
         year: 2000,
       },
     };
-    const httpResponse = await sut.handle(makeFakeCreateRequest());
+    const httpResponse = await sut.handle(makeFakeCreateVehicleRequest());
     expect(httpResponse.statusCode).toBe(201);
     expect(httpResponse.body).toMatchObject(httpRequest.body)
   });
