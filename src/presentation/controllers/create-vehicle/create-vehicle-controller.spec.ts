@@ -7,6 +7,7 @@ import { ServerError } from "@errors/server-error";
 import { HttpRequest } from "@protocols/http";
 import { CreateVehicleController } from "./create-vehicle-controller";
 import { badRequest } from "@helpers/http-helper";
+import { IValidation } from "@protocols/validation";
 
 const makeFakeCreateVehicleRequest = (): HttpRequest => {
   return {
@@ -47,17 +48,29 @@ const makeCreateVehicle = (): ICreateVehicle => {
   return new CreateVehicleStub();
 };
 
+const makeCreateVehicleValidation = (): IValidation => {
+  class CreateVehicleValidatorStub implements IValidation{
+    validate(input: any): Error {
+      return null
+    }
+  }
+  return new CreateVehicleValidatorStub()
+}
+
 interface SutTypes {
   sut: CreateVehicleController;
   createVehicleStub: ICreateVehicle;
+  createVehicleValidationStub: IValidation
 }
 
 const makeSut = (): SutTypes => {
   const createVehicleStub = makeCreateVehicle();
-  const sut = new CreateVehicleController(createVehicleStub);
+  const createVehicleValidationStub = makeCreateVehicleValidation()
+  const sut = new CreateVehicleController(createVehicleStub, createVehicleValidationStub);
   return {
     sut,
     createVehicleStub,
+    createVehicleValidationStub
   };
 };
 

@@ -3,6 +3,7 @@ import { HttpRequest, HttpResponse } from "@protocols/http";
 import { badRequest, created, serverError } from "@helpers/http-helper";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ICreateVehicle } from "@domain/usecases/create-vehicle";
+import { IValidation } from "@protocols/validation";
 
 export class CreateVehicleController implements IController {
   constructor(
@@ -28,6 +29,9 @@ export class CreateVehicleController implements IController {
           return badRequest(new MissingParamError(field));
         }
       }
+      const error = this.validation.validate(httpRequest.body);
+      if (error) {return badRequest(error)}
+      
       const createVehicleResult = await this.createVehicle.create(httpRequest.body)
       if(createVehicleResult instanceof Error){
         return badRequest(createVehicleResult)
