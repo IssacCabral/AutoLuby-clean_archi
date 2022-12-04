@@ -16,7 +16,9 @@
       "@controllers/*": ["./src/presentation/controllers/*"],
       "@data/*": ["./src/data/*"],
       "@repositories/*": ["./src/infra/repositories/*"],
-      "@factories/*": ["./src/main/factories/*"]
+      "@factories/*": ["./src/main/factories/*"],
+      "@main/*": ["./src/main/*"],
+      "@validators/*": ["./src/infra/validators/*"]
     }
   }
 }

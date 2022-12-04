@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
-import { ExpressAdapter } from "src/main/adapters/express-routes-adapter";
+import { ExpressAdapter } from "@main/adapters/express-routes-adapter";
 import { makeCreateVehicleController } from "@factories/controllers/create-vehicle/create-vehicle-controller-factory";
 
 const createVehicleRoutes = Router()
