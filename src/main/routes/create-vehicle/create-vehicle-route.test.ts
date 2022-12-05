@@ -1,6 +1,7 @@
 import request from 'supertest'
 import app from '../../config/app'
 import {prisma} from '../../../infra/prisma/prisma-client'
+import assert from 'assert'
 
 describe('CreateVehicle route', () => {
   beforeAll(async () => {
@@ -30,10 +31,13 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(201)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('id'))
+      })
   })
 
   test('Should return 400 if no brand is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         chassis: "8kK R41AKj mY 5u7312",
@@ -46,6 +50,12 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: brand"
+    })
   })
 
   test('Should return 400 if no chassis is provided', async () => {
@@ -62,10 +72,13 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
   })
 
   test('Should return 400 if no color is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -78,10 +91,17 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    
+    expect(result.body).toMatchObject({
+      error: "Missing param: color"
+    })
   })
 
   test('Should return 400 if no cost_price is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -94,10 +114,16 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: cost_price"
+    })
   })
 
   test('Should return 400 if no sale_price is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -110,10 +136,16 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: sale_price"
+    })
   })
 
   test('Should return 400 if no km is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -126,10 +158,16 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: km"
+    })
   })
 
   test('Should return 400 if no model is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -142,10 +180,16 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: model"
+    })
   })
 
   test('Should return 400 if no status is provided', async () => {
-    await request(app)
+    const result = await request(app)
       .post('/vehicles')
       .send({
         brand: "Toyota",
@@ -158,6 +202,12 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: status"
+    })
   })
 
   test('Should return 400 if no year is provided', async () => {
@@ -174,5 +224,11 @@ describe('CreateVehicle route', () => {
         status: "available",
       })
       .expect(400)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Missing param: year"
+    })
   })
 })
