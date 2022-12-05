@@ -19,19 +19,160 @@ describe('CreateVehicle route', () => {
     await request(app)
       .post('/vehicles')
       .send({
-        brand: "valid_brand",
-        chassis: "valid_chassis",
-        color: "valid_color",
-        cost_price: 0,
-        sale_price: 0,
-        km: 0,
-        model: "Onyx",
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
         status: "available",
         year: 2010,
       })
-      .expect(201).then()
+      .expect(201)
   })
-  // test('should 1 + 1 to be 2', () => {
-  //   expect(1+1).toBe(2)
-  // })
+
+  test('Should return 400 if no brand is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no chassis is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no color is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no cost_price is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no sale_price is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no km is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        model: "Corolla",
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no model is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        status: "available",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no status is provided', async () => {
+    await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        year: 2010,
+      })
+      .expect(400)
+  })
+
+  test('Should return 400 if no year is provided', async () => {
+    const result = await request(app)
+      .post('/vehicles')
+      .send({
+        brand: "Toyota",
+        chassis: "8kK R41AKj mY 5u7312",
+        color: "white",
+        cost_price: 175600,
+        sale_price: 200000,
+        km: 80,
+        model: "Corolla",
+        status: "available",
+      })
+      .expect(400)
+  })
 })
