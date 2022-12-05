@@ -4,5 +4,5 @@ env.config()
 
 export default {
   SERVER_PORT: process.env.SERVER_PORT || 3000,
-  DB_CONNECTION: process.env.DB_CONNECTION
+  DATABASE_URL: process.env.DATABASE_URL
 }
