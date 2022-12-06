@@ -98,4 +98,33 @@ describe("DbCreateUser UseCase", () => {
     await sut.create(makeFakeCreateUserParams())
     expect(encryptSpy).toHaveBeenCalledWith('valid_password')
   });
+
+  test('Should throw if Encrypter throws', async () => {
+    const {sut, encrypterStub} = makeSut()
+    jest.spyOn(encrypterStub, 'encrypt').mockImplementationOnce(() => {throw new Error()})
+    const promise = sut.create(makeFakeCreateUserParams())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CreateUserRepository with correct values', async () => {
+    const {sut, createUserRepositoryStub} = makeSut()
+    const createUserSpy = jest.spyOn(createUserRepositoryStub, 'create')
+    const createUserParams = {
+      email: "valid_email@mail.com",
+      password: "valid_password",
+      name: "valid_name",
+      cpf: "valid_cpf",
+      biography: "lorem ipsum",
+      wage: 1000
+    }
+    await sut.create(createUserParams)
+    expect(createUserSpy).toHaveBeenCalledWith({
+      email: "valid_email@mail.com",
+      password: "hashed_password",
+      name: "valid_name",
+      cpf: "valid_cpf",
+      biography: "lorem ipsum",
+      wage: 1000
+    })
+  })
 });
