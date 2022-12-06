@@ -153,4 +153,12 @@ describe("DbCreateUser UseCase", () => {
     const result = await sut.create(createUserParams)
     expect(result).toEqual(new FieldInUseError("email"))
   })
+
+  test('Should return an User with success', async () => {
+    const {sut} = makeSut()
+    const user = await sut.create(makeFakeCreateUserParams()) as UserModel
+    expect(user).toBeTruthy()
+    expect(user.id).toBeTruthy()
+    expect(user.cpf).toBe('valid_cpf')
+  })
 });
