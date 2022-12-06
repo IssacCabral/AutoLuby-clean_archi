@@ -4,6 +4,7 @@ import { IFindUserByCpfRepository } from "@data/protocols/find-user-by-cpf-repos
 import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository";
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
+import { FieldInUseError } from "@errors/field-in-use-error";
 import { DbCreateUser } from "./db-create-user";
 
 const makeFakeUser = (): UserModel => {
@@ -126,5 +127,30 @@ describe("DbCreateUser UseCase", () => {
       biography: "lorem ipsum",
       wage: 1000
     })
+  })
+
+  test('Should throw if CreateUserRepository throws', async () => {
+    const {sut, createUserRepositoryStub} = makeSut()
+    jest.spyOn(createUserRepositoryStub, 'create').mockImplementationOnce(() => {throw new Error()})
+    const promise = sut.create(makeFakeCreateUserParams())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return FieldInUseError if cpf already exists', async () => {
+    const {sut, findUserByCpfRepositoryStub} = makeSut()
+    const fakeUser = makeFakeUser()
+    jest.spyOn(findUserByCpfRepositoryStub, 'findByCpf').mockReturnValueOnce(new Promise((resolve, reject) => resolve(fakeUser)))
+    const createUserParams = makeFakeCreateUserParams()
+    const result = await sut.create(createUserParams)
+    expect(result).toEqual(new FieldInUseError("cpf"))
+  })
+
+  test('Should return FieldInUseError if email already exists', async () => {
+    const {sut, findUserByEmailRepositoryStub} = makeSut()
+    const fakeUser = makeFakeUser()
+    jest.spyOn(findUserByEmailRepositoryStub, 'findByEmail').mockReturnValueOnce(new Promise((resolve, reject) => resolve(fakeUser)))
+    const createUserParams = makeFakeCreateUserParams()
+    const result = await sut.create(createUserParams)
+    expect(result).toEqual(new FieldInUseError("email"))
   })
 });
