@@ -1,5 +1,6 @@
 import {HttpResponse} from "@protocols/http"
 import { ServerError } from "@errors/server-error"
+import { UnauthorizedError } from "@errors/unauthorized-error"
 
 export const serverError = (error: Error): HttpResponse => {
   const errorStack = error.stack
@@ -30,3 +31,9 @@ export const ok = (data: any): HttpResponse => {
   }
 }
 
+export const unauthorized = (): HttpResponse => {
+  return {
+    statusCode: 401,
+    body: new UnauthorizedError()
+  }
+}
