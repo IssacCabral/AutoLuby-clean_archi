@@ -1,5 +1,5 @@
 export type RoleModel = {
-  id: string
+  id: number
   type: string
   description: string
 }

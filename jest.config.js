@@ -3,7 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ["**/*{.test.ts,.spec.ts}"],
-  verbose: true,
   moduleNameMapper: {
     "@domain/(.*)$": '<rootDir>/./src/domain/$1',
     '@errors/(.*)$': '<rootDir>/./src/presentation/errors/$1',
@@ -15,5 +14,6 @@ module.exports = {
     "@data/(.*)$": "<rootDir>/./src/data/$1",
     "@repositories/(.*)$": "<rootDir>/./src/infra/repositories/$1",
     "@validators/(.*)$": "<rootDir>/./src/infra/validators/$1",
+    "@cryptography/(.*)$": "<rootDir>/./src/infra/cryptography/$1",
   }
 }

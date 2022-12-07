@@ -18,7 +18,8 @@
       "@repositories/*": ["./src/infra/repositories/*"],
       "@factories/*": ["./src/main/factories/*"],
       "@main/*": ["./src/main/*"],
-      "@validators/*": ["./src/infra/validators/*"]
+      "@validators/*": ["./src/infra/validators/*"],
+      "@cryptography/*": ["./src/infra/cryptography/*"]
     }
   }
 }

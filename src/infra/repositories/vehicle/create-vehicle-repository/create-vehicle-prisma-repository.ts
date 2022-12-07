@@ -5,7 +5,7 @@ import {prisma} from '../../../prisma/prisma-client'
 
 export class CreateVehiclePrismaRepository implements ICreateVehicleRepository{
   async create(vehicleData: CreateVehicleParams): Promise<VehicleModel> {
-    const vehicle = prisma.vehicle.create({
+    const vehicle = await prisma.vehicle.create({
       data: {
         ...vehicleData
       }
