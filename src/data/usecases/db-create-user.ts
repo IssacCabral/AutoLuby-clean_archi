@@ -17,6 +17,7 @@ export class DbCreateUser implements ICreateUser{
 
   async create(params: CreateUserParams): Promise<Error | UserModel> {
     const userByCpf = await this.findUserByCpfRepository.findByCpf(params.cpf)
+
     if(userByCpf){
       return new FieldInUseError("cpf")
     }
