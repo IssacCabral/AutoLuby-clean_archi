@@ -1,6 +1,6 @@
 import { IAuthentication } from "@domain/usecases/authentication";
 import { MissingParamError } from "@errors/missing-param-error";
-import { badRequest, serverError, unauthorized } from "@helpers/http-helper";
+import { badRequest, ok, serverError, unauthorized } from "@helpers/http-helper";
 import { IController } from "@protocols/controller";
 import { HttpRequest, HttpResponse } from "@protocols/http";
 import { IValidation } from "@protocols/validation";
@@ -29,7 +29,8 @@ export class LoginController implements IController{
       if(!accessToken){
         return unauthorized()
       }
-      
+
+      return ok({accessToken})
     } catch (error) {
       return serverError(error);
     }

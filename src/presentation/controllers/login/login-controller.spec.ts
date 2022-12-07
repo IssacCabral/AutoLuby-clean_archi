@@ -1,6 +1,6 @@
 import { IAuthentication } from "@domain/usecases/authentication"
 import { ServerError } from "@errors/server-error"
-import { unauthorized } from "@helpers/http-helper"
+import { ok, serverError, unauthorized } from "@helpers/http-helper"
 import { HttpRequest } from "@protocols/http"
 import { IValidation } from "@protocols/validation"
 import { LoginController } from "./login-controller"
@@ -112,18 +112,18 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(unauthorized())
   })
 
-  // test('Should return 500 if Authentication throws', async () => {
-  //   const {sut, authenticationStub} = makeSut()
-  //   jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
-  //     throw new Error()
-  //   })
-  //   const httpResponse = await sut.handle(makeFakeRequest())
-  //   expect(httpResponse).toEqual(serverError(new Error()))
-  // })
+  test('Should return 500 if Authentication throws', async () => {
+    const {sut, authenticationStub} = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeLoginRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 
-  // test('Should return 200 if valid credentials is provided', async () => {
-  //   const {sut} = makeSut()
-  //   const httpResponse = await sut.handle(makeFakeRequest())
-  //   expect(httpResponse).toEqual(ok({accessToken: 'any_token'}))
-  // })
+  test('Should return 200 if valid credentials is provided', async () => {
+    const {sut} = makeSut()
+    const httpResponse = await sut.handle(makeFakeLoginRequest())
+    expect(httpResponse).toEqual(ok({accessToken: 'any_token'}))
+  })
 })
