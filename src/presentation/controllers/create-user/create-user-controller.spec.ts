@@ -2,17 +2,21 @@ import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
 import { ICreateUser } from "@domain/usecases/create-user";
 import { MissingParamError } from "@errors/missing-param-error";
+import { ServerError } from "@errors/server-error";
+import { HttpRequest } from "@protocols/http";
 import { IValidation } from "@protocols/validation";
 import { CreateUserController } from "./create-user-controller";
 
-const makeFakeCreateUserParams = (): CreateUserParams => {
+const makeFakeCreateUserRequest = (): HttpRequest => {
   return {
-    email: "valid_email@mail.com",
-    password: "valid_password",
-    name: "valid_name",
-    cpf: "valid_cpf",
-    biography: "lorem ipsum",
-    wage: 1000,
+    body: {
+      email: "valid_email@mail.com",
+      password: "valid_password",
+      name: "valid_name",
+      cpf: "valid_cpf",
+      biography: "lorem ipsum",
+      wage: 1000,
+    }
   };
 };
 
@@ -159,32 +163,29 @@ describe("CreateUser Controller", () => {
     expect(httpResponse.body).toEqual(new MissingParamError("wage"));
   });
 
-  // test("Should return 500 if CreateVehicle throws", async () => {
-  //   const { sut, createVehicleStub } = makeSut();
-  //   jest.spyOn(createVehicleStub, "create").mockImplementationOnce(() => {
-  //     throw new Error();
-  //   });
-  //   const httpResponse = await sut.handle(makeFakeCreateVehicleRequest());
-  //   expect(httpResponse.statusCode).toBe(500);
-  //   expect(httpResponse.body).toEqual(new ServerError());
-  // });
+  test("Should return 500 if CreateUser throws", async () => {
+    const { sut, createUserStub } = makeSut();
+    jest.spyOn(createUserStub, "create").mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = await sut.handle(makeFakeCreateUserRequest());
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 
-  // test("Should call CreateVehicle with correct values", async () => {
-  //   const { sut, createVehicleStub } = makeSut();
-  //   const createSpy = jest.spyOn(createVehicleStub, "create");
-  //   await sut.handle(makeFakeCreateVehicleRequest());
-  //   expect(createSpy).toHaveBeenCalledWith({
-  //     brand: "any_brand",
-  //     chassis: "any_chassis",
-  //     color: "any_color",
-  //     cost_price: 0,
-  //     sale_price: 0,
-  //     km: 0,
-  //     model: "any_model",
-  //     status: "any_status",
-  //     year: 2000,
-  //   });
-  // });
+  test("Should call CreateUser with correct values", async () => {
+    const { sut, createUserStub } = makeSut();
+    const createSpy = jest.spyOn(createUserStub, "create");
+    await sut.handle(makeFakeCreateUserRequest());
+    expect(createSpy).toHaveBeenCalledWith({
+      email: "valid_email@mail.com",
+      password: "valid_password",
+      name: "valid_name",
+      cpf: "valid_cpf",
+      biography: "lorem ipsum",
+      wage: 1000,
+    });
+  });
 
   // test('Should return 400 if CreateVehicle returns a FieldInUseError', async () => {
   //   const {sut, createVehicleStub} = makeSut()
