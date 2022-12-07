@@ -31,6 +31,7 @@ describe('CreateVehicle route', () => {
         year: 2010,
       })
       .expect(201)
+      .expect("Content-Type", /json/)
       .expect((res) => {
         assert(res.body.hasOwnProperty('id'))
       })
