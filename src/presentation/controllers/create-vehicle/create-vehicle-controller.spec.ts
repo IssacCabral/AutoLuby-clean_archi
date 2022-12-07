@@ -288,6 +288,14 @@ describe("CreateVehicle Controller", () => {
     expect(httpResponse.body).toBeInstanceOf(Error)
   })
 
+  test('Should call Validation with correct values', () => {
+    const {sut, createVehicleValidationStub} = makeSut()
+    const validateSpy = jest.spyOn(createVehicleValidationStub, 'validate')
+    const httpRequest = makeFakeCreateVehicleRequest()
+    sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
   test("Should return 201 if valid data is provided", async () => {
     const { sut } = makeSut();
     const httpRequest = {

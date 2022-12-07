@@ -204,6 +204,14 @@ describe("CreateUser Controller", () => {
     expect(httpResponse.body).toBeInstanceOf(Error)
   })
 
+  test('Should call Validation with correct values', () => {
+    const {sut, createUserValidationStub} = makeSut()
+    const validateSpy = jest.spyOn(createUserValidationStub, 'validate')
+    const httpRequest = makeFakeCreateUserRequest()
+    sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
   test("Should return 201 if valid data is provided", async () => {
     const { sut } = makeSut();
     const httpRequest = {
