@@ -1,8 +1,10 @@
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
 import { ICreateUser } from "@domain/usecases/create-user";
+import { FieldInUseError } from "@errors/field-in-use-error";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ServerError } from "@errors/server-error";
+import { badRequest,  } from "@helpers/http-helper";
 import { HttpRequest } from "@protocols/http";
 import { IValidation } from "@protocols/validation";
 import { CreateUserController } from "./create-user-controller";
@@ -187,38 +189,35 @@ describe("CreateUser Controller", () => {
     });
   });
 
-  // test('Should return 400 if CreateVehicle returns a FieldInUseError', async () => {
-  //   const {sut, createVehicleStub} = makeSut()
-  //   jest.spyOn(createVehicleStub, 'create').mockReturnValueOnce(new Promise((resolve) => resolve(new FieldInUseError('chassis'))))
-  //   const httpResponse = await sut.handle(makeFakeCreateVehicleRequest())
-  //   expect(httpResponse).toEqual(badRequest(new FieldInUseError('chassis')))
-  // })
+  test('Should return 400 if CreateUser returns a FieldInUseError', async () => {
+    const {sut, createUserStub} = makeSut()
+    jest.spyOn(createUserStub, 'create').mockReturnValueOnce(new Promise((resolve) => resolve(new FieldInUseError('cpf'))))
+    const httpResponse = await sut.handle(makeFakeCreateUserRequest())
+    expect(httpResponse).toEqual(badRequest(new FieldInUseError('cpf')))
+  })
 
-  // test('Should return 400 if Validation returns an error', async () => {
-  //   const {sut, createVehicleValidationStub} = makeSut()
-  //   jest.spyOn(createVehicleValidationStub, 'validate').mockReturnValueOnce(new Error())
-  //   const httpResponse = await sut.handle(makeFakeCreateVehicleRequest())
-  //   expect(httpResponse.statusCode).toBe(400)
-  //   expect(httpResponse.body).toBeInstanceOf(Error)
-  // })
+  test('Should return 400 if Validation returns an error', async () => {
+    const {sut, createUserValidationStub} = makeSut()
+    jest.spyOn(createUserValidationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpResponse = await sut.handle(makeFakeCreateUserRequest())
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toBeInstanceOf(Error)
+  })
 
-  // test("Should return 201 if valid data is provided", async () => {
-  //   const { sut } = makeSut();
-  //   const httpRequest = {
-  //     body: {
-  //       brand: "valid_brand",
-  //       chassis: "valid_chassis",
-  //       color: "valid_color",
-  //       cost_price: 0,
-  //       sale_price: 0,
-  //       km: 0,
-  //       model: "valid_model",
-  //       status: "valid_status",
-  //       year: 2000,
-  //     },
-  //   };
-  //   const httpResponse = await sut.handle(makeFakeCreateVehicleRequest());
-  //   expect(httpResponse.statusCode).toBe(201);
-  //   expect(httpResponse.body).toMatchObject(httpRequest.body)
-  // });
+  test("Should return 201 if valid data is provided", async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: "valid_email@mail.com",
+        password: "hashed_password",
+        name: "valid_name",
+        cpf: "valid_cpf",
+        biography: "lorem ipsum",
+        wage: 1000,
+      }
+    };
+    const httpResponse = await sut.handle(makeFakeCreateUserRequest());
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toMatchObject(httpRequest.body)
+  });
 });
