@@ -146,4 +146,67 @@ describe('CreateUser route', () => {
     })
   })
 
+  test('Should return 400 if an invalid email is provided', async () => {
+    const result = await request(app)
+      .post('/users')
+      .send({
+        email: "invalidmail.com",
+        password: "Abc@12345",
+        name: "Ana Vitória",
+        cpf: "065.553.313-35",
+        biography: "MInha biografia",
+        wage: 1000
+      })
+      .expect(400)
+      .expect("Content-Type", /json/)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Invalid param: email"
+    })
+  })
+
+  test('Should return 400 if a very weak password is provided', async () => {
+    const result = await request(app)
+      .post('/users')
+      .send({
+        email: "valid@gmail.com",
+        password: "123",
+        name: "Ana Vitória",
+        cpf: "065.553.313-35",
+        biography: "MInha biografia",
+        wage: 1000
+      })
+      .expect(400)
+      .expect("Content-Type", /json/)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Invalid param: password"
+    })
+  })
+
+  test('Should return 400 if an invalid cpf is provided', async () => {
+    const result = await request(app)
+      .post('/users')
+      .send({
+        email: "valid@gmail.com",
+        password: "Abc@123456",
+        name: "Ana Vitória",
+        cpf: "065-553-313_35",
+        biography: "MInha biografia",
+        wage: 1000
+      })
+      .expect(400)
+      .expect("Content-Type", /json/)
+      .expect((res) => {
+        assert(res.body.hasOwnProperty('error'))
+      })
+    expect(result.body).toMatchObject({
+      error: "Invalid param: cpf"
+    })
+  })
+
 })
