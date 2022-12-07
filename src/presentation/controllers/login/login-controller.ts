@@ -22,6 +22,8 @@ export class LoginController implements IController{
       const error = this.validation.validate(httpRequest.body);
       if (error) {return badRequest(error)}
       
+      const {email, password} = httpRequest.body
+      await this.authentication.auth(email, password)
     } catch (error) {
       return serverError(error);
     }
