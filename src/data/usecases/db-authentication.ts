@@ -1,12 +1,14 @@
 import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository";
 import { IHashComparer } from "@data/protocols/hash-comparer";
+import { ITokenGenerator } from "@data/protocols/token-generator";
 import { IAuthentication } from "@domain/usecases/authentication";
 import { InvalidCredentialsError } from "@errors/invalid-credentials-error";
 
 export class DbAuthentication implements IAuthentication{
   constructor(
     private readonly findUserByEmailRepository: IFindUserByEmailRepository,
-    private readonly hashComparer: IHashComparer
+    private readonly hashComparer: IHashComparer,
+    private readonly tokenGenerator: ITokenGenerator
   ) {}
 
   async auth(email: string, password: string): Promise<string | Error> {
@@ -19,7 +21,7 @@ export class DbAuthentication implements IAuthentication{
     if(hashComparerResult == false){
       return new InvalidCredentialsError()
     }
-
+    await this.tokenGenerator.generate(user.id)
     return 'hash'
   }
 }

@@ -1,5 +1,6 @@
 import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository"
 import { IHashComparer } from "@data/protocols/hash-comparer"
+import { ITokenGenerator } from "@data/protocols/token-generator"
 import { UserModel } from "@domain/models/user"
 import { InvalidCredentialsError } from "@errors/invalid-credentials-error"
 import { DbAuthentication } from "./db-authentication"
@@ -43,20 +44,32 @@ const makeFindUserByEmailRepository = (): IFindUserByEmailRepository => {
   return new FindUserByEmailRepositoryStub()
 }
 
+const makeTokenGenerator = (): ITokenGenerator => {
+  class TokenGeneratorStub implements ITokenGenerator{
+    async generate(id: string): Promise<string>{
+      return 'token'
+    }
+  }
+  return new TokenGeneratorStub()
+}
+
 interface SutTypes{
   sut: DbAuthentication
   findUserByEmailRepositoryStub: IFindUserByEmailRepository
   hashComparerStub: IHashComparer
+  tokenGeneratorStub: ITokenGenerator
 }
 
 const makeSut = (): SutTypes => {
   const findUserByEmailRepositoryStub = makeFindUserByEmailRepository()
   const hashComparerStub = makeHashComparer()
-  const sut = new DbAuthentication(findUserByEmailRepositoryStub, hashComparerStub)
+  const tokenGeneratorStub = makeTokenGenerator()
+  const sut = new DbAuthentication(findUserByEmailRepositoryStub, hashComparerStub, tokenGeneratorStub)
   return {
     sut,
     findUserByEmailRepositoryStub,
-    hashComparerStub
+    hashComparerStub,
+    tokenGeneratorStub
   }
 }
 
@@ -107,6 +120,14 @@ describe('DbAuthentication UseCase', () => {
     const authParams = makeFakeAuthRequest()
     const result = await sut.auth(authParams.email, authParams.password)
     expect(result).toEqual(new InvalidCredentialsError())
+  })
+
+  test('Should call TokenGenerator with correct id', async () => {
+    const {sut, tokenGeneratorStub} = makeSut()
+    const tokenGeneratorSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+    const authParams = makeFakeAuthRequest()
+    await sut.auth(authParams.email, authParams.password)
+    expect(tokenGeneratorSpy).toHaveBeenCalledWith('valid_id')
   })
 
 })
