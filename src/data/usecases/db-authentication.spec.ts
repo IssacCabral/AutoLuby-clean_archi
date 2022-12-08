@@ -1,6 +1,7 @@
 import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository"
 import { IHashComparer } from "@data/protocols/hash-comparer"
 import { UserModel } from "@domain/models/user"
+import { InvalidCredentialsError } from "@errors/invalid-credentials-error"
 import { DbAuthentication } from "./db-authentication"
 
 const makeHashComparer = (): IHashComparer => {
@@ -76,12 +77,12 @@ describe('DbAuthentication UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should returns null if FindUserByEmailRepository returns null', async () => {
+  test('Should returns InvalidCredentialsError if FindUserByEmailRepository returs null', async () => {
     const {sut, findUserByEmailRepositoryStub} = makeSut()
     jest.spyOn(findUserByEmailRepositoryStub, 'findByEmail').mockReturnValue(null)
     const authParams = makeFakeAuthRequest()
     const result = await sut.auth(authParams.email, authParams.password)
-    expect(result).toBeNull()
+    expect(result).toEqual(new InvalidCredentialsError())
   })
 
   test('Should call HashComparer with correct values', async () => {
@@ -100,11 +101,12 @@ describe('DbAuthentication UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should returns null if HashComparer returns false', async () => {
+  test('Should returns InvalidCredentialsError if HashComparer returns false', async () => {
     const {sut, hashComparerStub} = makeSut()
     jest.spyOn(hashComparerStub, 'compare').mockReturnValue(new Promise((resolve, reject) => resolve(false)))
     const authParams = makeFakeAuthRequest()
     const result = await sut.auth(authParams.email, authParams.password)
-    expect(result).toBeNull()
+    expect(result).toEqual(new InvalidCredentialsError())
   })
+
 })
