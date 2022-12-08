@@ -10,8 +10,8 @@ export class DbAuthentication implements IAuthentication{
     const userByEmail = await this.findUserByEmailRepository.findByEmail(email)
 
     if(!userByEmail){
-      return "erro"
+      return null
     }
-    return null
+    return 'null'
   }
 }

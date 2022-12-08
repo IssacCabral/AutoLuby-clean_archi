@@ -63,4 +63,12 @@ describe('DbAuthentication UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should returns null if FindUserByEmailRepository returns null', async () => {
+    const {sut, findUserByEmailRepositoryStub} = makeSut()
+    jest.spyOn(findUserByEmailRepositoryStub, 'findByEmail').mockReturnValue(null)
+    const authParams = makeFakeAuthRequest()
+    const result = await sut.auth(authParams.email, authParams.password)
+    expect(result).toBe(null)
+  })
+
 })
