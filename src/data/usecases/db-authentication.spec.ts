@@ -16,6 +16,13 @@ const makeFakeUser = (): UserModel => {
   };
 };
 
+const makeFakeAuthRequest = () => {
+  return {
+    email: 'any_email@mail.com',
+    password: 'any_password'
+  }
+}
+
 const makeFindUserByEmailRepository = (): IFindUserByEmailRepository => {
   class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository{
     async findByEmail(email: string): Promise<UserModel> {
@@ -43,13 +50,17 @@ describe('DbAuthentication UseCase', () => {
   test('Should call FindUserByEmailRepository with correct email', async () => {
     const {sut, findUserByEmailRepositoryStub} = makeSut()
     const findUserByEmailSpy = jest.spyOn(findUserByEmailRepositoryStub, 'findByEmail')
-    const authParams = {
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    }
+    const authParams = makeFakeAuthRequest()
     await sut.auth(authParams.email, authParams.password)
     expect(findUserByEmailSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
-  
+  test('Should throw if FindUserByEmailRepository throws', async () => {
+    const {sut, findUserByEmailRepositoryStub} = makeSut()
+    jest.spyOn(findUserByEmailRepositoryStub, 'findByEmail').mockImplementationOnce(() => {throw new Error()})
+    const authParams = makeFakeAuthRequest()
+    const promise = sut.auth(authParams.email, authParams.password)
+    await expect(promise).rejects.toThrow()
+  })
+
 })
