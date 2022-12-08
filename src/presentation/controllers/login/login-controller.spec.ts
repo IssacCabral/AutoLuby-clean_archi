@@ -113,18 +113,18 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(unauthorized(new InvalidCredentialsError()))
   })
 
-  // test('Should return 500 if Authentication throws', async () => {
-  //   const {sut, authenticationStub} = makeSut()
-  //   jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
-  //     throw new Error()
-  //   })
-  //   const httpResponse = await sut.handle(makeFakeLoginRequest())
-  //   expect(httpResponse).toEqual(serverError(new Error()))
-  // })
+  test('Should return 500 if Authentication throws', async () => {
+    const {sut, authenticationStub} = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeLoginRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 
-  // test('Should return 200 if valid credentials is provided', async () => {
-  //   const {sut} = makeSut()
-  //   const httpResponse = await sut.handle(makeFakeLoginRequest())
-  //   expect(httpResponse).toEqual(ok({accessToken: 'any_token'}))
-  // })
+  test('Should return 200 if valid credentials is provided', async () => {
+    const {sut} = makeSut()
+    const httpResponse = await sut.handle(makeFakeLoginRequest())
+    expect(httpResponse).toEqual(ok({accessTokenResult: 'any_token'}))
+  })
 })
