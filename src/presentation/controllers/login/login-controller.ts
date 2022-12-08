@@ -24,13 +24,13 @@ export class LoginController implements IController{
       
       const {email, password} = httpRequest.body
       
-      const accessToken = await this.authentication.auth(email, password)
+      const accessTokenResult = await this.authentication.auth(email, password)
 
-      if(!accessToken){
-        return unauthorized()
+      if(accessTokenResult instanceof Error){
+        return unauthorized(accessTokenResult)
       }
 
-      return ok({accessToken})
+      return ok({accessTokenResult})
     } catch (error) {
       return serverError(error);
     }

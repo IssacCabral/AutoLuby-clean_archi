@@ -31,9 +31,9 @@ export const ok = (data: any): HttpResponse => {
   }
 }
 
-export const unauthorized = (): HttpResponse => {
+export const unauthorized = (error: Error): HttpResponse => {
   return {
     statusCode: 401,
-    body: new UnauthorizedError()
+    body: error
   }
 }
