@@ -47,7 +47,7 @@ const makeFindUserByEmailRepository = (): IFindUserByEmailRepository => {
 const makeTokenGenerator = (): ITokenGenerator => {
   class TokenGeneratorStub implements ITokenGenerator{
     async generate(id: string): Promise<string>{
-      return 'token'
+      return 'any_token'
     }
   }
   return new TokenGeneratorStub()
@@ -138,4 +138,10 @@ describe('DbAuthentication UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should returns a token on success', async () => {
+    const {sut} = makeSut()
+    const authParams = makeFakeAuthRequest()
+    const result = await sut.auth(authParams.email, authParams.password)
+    expect(result).toBe('any_token')
+  })
 })

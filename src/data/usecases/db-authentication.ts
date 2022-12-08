@@ -21,7 +21,8 @@ export class DbAuthentication implements IAuthentication{
     if(hashComparerResult == false){
       return new InvalidCredentialsError()
     }
-    await this.tokenGenerator.generate(user.id)
-    return 'hash'
+
+    const accessToken = await this.tokenGenerator.generate(user.id)
+    return accessToken
   }
 }
