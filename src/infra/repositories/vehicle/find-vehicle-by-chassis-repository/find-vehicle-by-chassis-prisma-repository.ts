@@ -1,4 +1,4 @@
-import { IFindVehicleByChassisRepository } from "@data/protocols/find-vehicle-by-chassis-repository";
+import { IFindVehicleByChassisRepository } from "@data/protocols/vehicle/find-vehicle-by-chassis-repository";
 import { VehicleModel } from "@domain/models/vehicle";
 import {prisma} from '../../../prisma/prisma-client'
 

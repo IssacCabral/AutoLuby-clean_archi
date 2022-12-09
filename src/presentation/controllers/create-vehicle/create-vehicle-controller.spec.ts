@@ -1,6 +1,6 @@
 import { VehicleModel } from "@domain/models/vehicle";
 import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
-import { ICreateVehicle } from "@domain/usecases/create-vehicle";
+import { ICreateVehicle } from "@domain/usecases/vehicle/create-vehicle";
 import { FieldInUseError } from "@errors/field-in-use-error";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ServerError } from "@errors/server-error";

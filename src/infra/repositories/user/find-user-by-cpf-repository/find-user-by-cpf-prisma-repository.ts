@@ -1,4 +1,4 @@
-import { IFindUserByCpfRepository } from "@data/protocols/find-user-by-cpf-repository";
+import { IFindUserByCpfRepository } from "@data/protocols/user/find-user-by-cpf-repository";
 import { UserModel } from "@domain/models/user";
 import {prisma} from '../../../prisma/prisma-client'
 

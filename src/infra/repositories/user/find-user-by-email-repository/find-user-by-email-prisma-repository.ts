@@ -1,4 +1,4 @@
-import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository";
+import { IFindUserByEmailRepository } from "@data/protocols/user/find-user-by-email-repository";
 import { UserModel } from "@domain/models/user";
 import {prisma} from '../../../prisma/prisma-client'
 

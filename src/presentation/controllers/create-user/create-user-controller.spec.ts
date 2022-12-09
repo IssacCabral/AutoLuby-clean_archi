@@ -1,6 +1,6 @@
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
-import { ICreateUser } from "@domain/usecases/create-user";
+import { ICreateUser } from "@domain/usecases/user/create-user";
 import { FieldInUseError } from "@errors/field-in-use-error";
 import { MissingParamError } from "@errors/missing-param-error";
 import { ServerError } from "@errors/server-error";

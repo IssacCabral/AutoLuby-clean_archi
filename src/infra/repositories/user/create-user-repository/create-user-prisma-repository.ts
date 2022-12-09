@@ -1,4 +1,4 @@
-import { ICreateUserRepository } from "@data/protocols/create-user-repository";
+import { ICreateUserRepository } from "@data/protocols/user/create-user-repository";
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
 import {prisma} from '../../../prisma/prisma-client'

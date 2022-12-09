@@ -1,6 +1,6 @@
 import request from 'supertest'
-import app from '../../config/app'
-import {prisma} from '../../../infra/prisma/prisma-client'
+import app from '@main/config/app'
+import {prisma} from '@infra/prisma/prisma-client'
 import assert from 'assert'
 
 describe('CreateUser route', () => {

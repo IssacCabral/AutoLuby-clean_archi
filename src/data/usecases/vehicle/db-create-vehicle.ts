@@ -1,8 +1,8 @@
 import { VehicleModel } from "@domain/models/vehicle";
 import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
-import { ICreateVehicle } from "@domain/usecases/create-vehicle";
-import { ICreateVehicleRepository } from "@data/protocols/create-vehicle-repository";
-import { IFindVehicleByChassisRepository } from "@data/protocols/find-vehicle-by-chassis-repository";
+import { ICreateVehicle } from "@domain/usecases/vehicle/create-vehicle";
+import { ICreateVehicleRepository } from "@data/protocols/vehicle/create-vehicle-repository";
+import { IFindVehicleByChassisRepository } from "@data/protocols/vehicle/find-vehicle-by-chassis-repository";
 import { FieldInUseError } from "@errors/field-in-use-error";
 
 export class DbCreateVehicle implements ICreateVehicle{

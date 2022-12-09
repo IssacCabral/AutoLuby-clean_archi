@@ -15,5 +15,6 @@ module.exports = {
     "@repositories/(.*)$": "<rootDir>/./src/infra/repositories/$1",
     "@validators/(.*)$": "<rootDir>/./src/infra/validators/$1",
     "@cryptography/(.*)$": "<rootDir>/./src/infra/cryptography/$1",
+    "@infra/(.*)$": "<rootDir>/./src/infra/$1"
   }
 }

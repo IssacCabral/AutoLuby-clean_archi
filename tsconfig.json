@@ -19,7 +19,8 @@
       "@factories/*": ["./src/main/factories/*"],
       "@main/*": ["./src/main/*"],
       "@validators/*": ["./src/infra/validators/*"],
-      "@cryptography/*": ["./src/infra/cryptography/*"]
+      "@cryptography/*": ["./src/infra/cryptography/*"],
+      "@infra/*": ["./src/infra/*"]
     }
   }
 }

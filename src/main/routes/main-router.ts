@@ -1,6 +1,6 @@
 import { Router } from "express";
-import createVehicleRoutes from "./create-vehicle/create-vehicle-router";
-import createUserRoutes from "./create-user/create-user-router";
+import createVehicleRoutes from "./vehicle-routes/create-vehicle/create-vehicle-router";
+import createUserRoutes from "./user-routes/create-user/create-user-router";
 
 const mainRouter = Router()
 

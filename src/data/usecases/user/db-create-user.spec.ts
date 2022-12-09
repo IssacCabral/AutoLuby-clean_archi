@@ -1,7 +1,7 @@
-import { ICreateUserRepository } from "@data/protocols/create-user-repository";
-import { IEncrypter } from "@data/protocols/encrypter";
-import { IFindUserByCpfRepository } from "@data/protocols/find-user-by-cpf-repository";
-import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository";
+import { ICreateUserRepository } from "@data/protocols/user/create-user-repository";
+import { IEncrypter } from "@data/protocols/cryptography/encrypter";
+import { IFindUserByCpfRepository } from "@data/protocols/user/find-user-by-cpf-repository";
+import { IFindUserByEmailRepository } from "@data/protocols/user/find-user-by-email-repository";
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
 import { FieldInUseError } from "@errors/field-in-use-error";

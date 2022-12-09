@@ -1,4 +1,4 @@
-import { IAuthentication } from "@domain/usecases/authentication"
+import { IAuthentication } from "@domain/usecases/authentication/authentication"
 import { InvalidCredentialsError } from "@errors/invalid-credentials-error"
 import { ServerError } from "@errors/server-error"
 import { ok, serverError, unauthorized } from "@helpers/http-helper"

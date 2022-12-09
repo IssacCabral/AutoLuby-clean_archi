@@ -1,8 +1,8 @@
-import { IFindUserByEmailRepository } from "@data/protocols/find-user-by-email-repository";
-import { IHashComparer } from "@data/protocols/hash-comparer";
-import { ITokenGenerator } from "@data/protocols/token-generator";
-import { IUpdateAccessTokenRepository } from "@data/protocols/update-access-token-repository";
-import { IAuthentication } from "@domain/usecases/authentication";
+import { IFindUserByEmailRepository } from "@data/protocols/user/find-user-by-email-repository";
+import { IHashComparer } from "@data/protocols/cryptography/hash-comparer";
+import { ITokenGenerator } from "@data/protocols/cryptography/token-generator";
+import { IUpdateAccessTokenRepository } from "@data/protocols/user/update-access-token-repository";
+import { IAuthentication } from "@domain/usecases/authentication/authentication";
 import { InvalidCredentialsError } from "@errors/invalid-credentials-error";
 
 export class DbAuthentication implements IAuthentication{

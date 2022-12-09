@@ -1,4 +1,4 @@
-import { IAuthentication } from "@domain/usecases/authentication";
+import { IAuthentication } from "@domain/usecases/authentication/authentication";
 import { MissingParamError } from "@errors/missing-param-error";
 import { badRequest, ok, serverError, unauthorized } from "@helpers/http-helper";
 import { IController } from "@protocols/controller";

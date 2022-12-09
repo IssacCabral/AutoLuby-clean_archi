@@ -1,4 +1,4 @@
-import { ICreateUser } from "@domain/usecases/create-user";
+import { ICreateUser } from "@domain/usecases/user/create-user";
 import { MissingParamError } from "@errors/missing-param-error";
 import { badRequest, created, serverError } from "@helpers/http-helper";
 import { IController } from "@protocols/controller";

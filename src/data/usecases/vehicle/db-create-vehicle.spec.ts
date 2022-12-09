@@ -1,8 +1,8 @@
-import { IFindVehicleByChassisRepository } from "@data/protocols/find-vehicle-by-chassis-repository";
+import { IFindVehicleByChassisRepository } from "@data/protocols/vehicle/find-vehicle-by-chassis-repository";
 import { VehicleModel } from "@domain/models/vehicle";
 import { CreateVehicleParams } from "@domain/types/create-vehicle-params";
 import { FieldInUseError } from "@errors/field-in-use-error";
-import { ICreateVehicleRepository } from "../protocols/create-vehicle-repository";
+import { ICreateVehicleRepository } from "../../protocols/vehicle/create-vehicle-repository";
 import { DbCreateVehicle } from "./db-create-vehicle";
 
 const makeFakeCreateVehicleParams = (): CreateVehicleParams => {
