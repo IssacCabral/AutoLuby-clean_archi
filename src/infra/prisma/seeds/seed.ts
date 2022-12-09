@@ -1,4 +1,4 @@
-import {prisma} from '../prisma-client'
+import {prisma} from '@infra/prisma/prisma-client'
 
 async function createRoles(){
   const adminRole = await prisma.role.upsert({

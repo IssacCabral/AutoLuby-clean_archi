@@ -1,7 +1,7 @@
 import { ICreateUserRepository } from "@data/protocols/user/create-user-repository";
 import { UserModel } from "@domain/models/user";
 import { CreateUserParams } from "@domain/types/create-user-params";
-import {prisma} from '../../../prisma/prisma-client'
+import {prisma} from '@infra/prisma/prisma-client'
 
 export class CreateUserPrismaRepository implements ICreateUserRepository{
   async create(userData: CreateUserParams): Promise<UserModel> {

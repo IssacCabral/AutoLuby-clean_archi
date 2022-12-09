@@ -1,7 +1,7 @@
 import { IController } from "@protocols/controller";
 import { Request, Response } from "express";
 import { HttpRequest, HttpResponse } from "@protocols/http";
-import env from "../../infra/config/env";
+import env from "@infra/config/env";
 
 export class ExpressAdapter{
   static adapt(controller: IController){
