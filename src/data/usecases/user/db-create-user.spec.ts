@@ -1,5 +1,5 @@
 import { ICreateUserRepository } from "@data/protocols/user/create-user-repository";
-import { IEncrypter } from "@data/protocols/cryptography/encrypter";
+import { IHasher } from "@data/protocols/cryptography/hasher";
 import { IFindUserByCpfRepository } from "@data/protocols/user/find-user-by-cpf-repository";
 import { IFindUserByEmailRepository } from "@data/protocols/user/find-user-by-email-repository";
 import { UserModel } from "@domain/models/user";
@@ -60,13 +60,13 @@ const makeFindUserByEmailRepository = (): IFindUserByEmailRepository => {
   return new FindUserByEmailRepositoryStub()
 }
 
-const makeEncrypter = (): IEncrypter => {
-  class EncrypterStub implements IEncrypter {
-    async encrypt(value: string): Promise<string> {
+const makeHasher = (): IHasher => {
+  class HasherStub implements IHasher {
+    async hash(value: string): Promise<string> {
       return "hashed_password";
     }
   }
-  return new EncrypterStub();
+  return new HasherStub();
 };
 
 interface SutTypes{
@@ -74,35 +74,35 @@ interface SutTypes{
   createUserRepositoryStub: ICreateUserRepository,
   findUserByCpfRepositoryStub: IFindUserByCpfRepository,
   findUserByEmailRepositoryStub: IFindUserByEmailRepository
-  encrypterStub: IEncrypter,
+  hasherStub: IHasher,
 }
 
 const makeSut = (): SutTypes => {
   const createUserRepositoryStub = makeCreateUserRepository()
   const findUserByCpfRepositoryStub = makeFindUserByCpfRepository()
   const findUserByEmailRepositoryStub = makeFindUserByEmailRepository()
-  const encrypterStub = makeEncrypter()
-  const sut = new DbCreateUser(createUserRepositoryStub, findUserByCpfRepositoryStub, findUserByEmailRepositoryStub, encrypterStub)
+  const hasherStub = makeHasher()
+  const sut = new DbCreateUser(createUserRepositoryStub, findUserByCpfRepositoryStub, findUserByEmailRepositoryStub, hasherStub)
   return {
     sut,
     createUserRepositoryStub,
     findUserByCpfRepositoryStub,
     findUserByEmailRepositoryStub,
-    encrypterStub
+    hasherStub
   }
 }
 
 describe("DbCreateUser UseCase", () => {
-  test("Should call encrypter with correct password", async () => {
-    const {sut, encrypterStub} = makeSut()
-    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
+  test("Should call hasher with correct password", async () => {
+    const {sut, hasherStub} = makeSut()
+    const hashSpy = jest.spyOn(hasherStub, 'hash')
     await sut.create(makeFakeCreateUserParams())
-    expect(encryptSpy).toHaveBeenCalledWith('valid_password')
+    expect(hashSpy).toHaveBeenCalledWith('valid_password')
   });
 
-  test('Should throw if Encrypter throws', async () => {
-    const {sut, encrypterStub} = makeSut()
-    jest.spyOn(encrypterStub, 'encrypt').mockImplementationOnce(() => {throw new Error()})
+  test('Should throw if Hasher throws', async () => {
+    const {sut, hasherStub} = makeSut()
+    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(() => {throw new Error()})
     const promise = sut.create(makeFakeCreateUserParams())
     await expect(promise).rejects.toThrow()
   })

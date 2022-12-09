@@ -1,5 +1,5 @@
 import { ICreateUserRepository } from "@data/protocols/user/create-user-repository";
-import { IEncrypter } from "@data/protocols/cryptography/encrypter";
+import { IHasher } from "@data/protocols/cryptography/hasher";
 import { IFindUserByCpfRepository } from "@data/protocols/user/find-user-by-cpf-repository";
 import { IFindUserByEmailRepository } from "@data/protocols/user/find-user-by-email-repository";
 import { UserModel } from "@domain/models/user";
@@ -12,7 +12,7 @@ export class DbCreateUser implements ICreateUser{
     private readonly createUserRepository: ICreateUserRepository,
     private readonly findUserByCpfRepository: IFindUserByCpfRepository,
     private readonly findUserByEmailRepository: IFindUserByEmailRepository,
-    private readonly encrypter: IEncrypter
+    private readonly hasher: IHasher
   ) {}
 
   async create(params: CreateUserParams): Promise<Error | UserModel> {
@@ -27,7 +27,7 @@ export class DbCreateUser implements ICreateUser{
       return new FieldInUseError("email")
     }
 
-    const hashedPassword = await this.encrypter.encrypt(params.password)
+    const hashedPassword = await this.hasher.hash(params.password)
     const user = await this.createUserRepository.create(Object.assign({}, params, {password: hashedPassword}))
     return user
   }
