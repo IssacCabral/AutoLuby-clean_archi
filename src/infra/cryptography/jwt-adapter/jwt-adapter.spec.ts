@@ -28,4 +28,31 @@ describe('JwtAdapter', () => {
     const accessToken = await sut.generate('any_id')
     expect(accessToken).toBe('any_token')
   })
+
+  test('Should throw if sign throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {throw new Error()})
+    const promise = sut.generate('any_id')
+    expect(promise).rejects.toThrow()
+  })
+
+  test('Should call verify with correct values', async () => {
+    const sut = makeSut()
+    const verifySpy = jest.spyOn(jwt, 'verify')
+    await sut.verify('any_token')
+    expect(verifySpy).toHaveBeenCalledWith('any_token', 'secret')
+  })
+
+  test('Should return a value on verify success', async () => {
+    const sut = makeSut()
+    const value = await sut.verify('any_token')
+    expect(value).toBe('any_value')
+  })
+
+  test('Should throw if verify throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {throw new Error()})
+    const promise = sut.verify('any_token')
+    await expect(promise).rejects.toThrow()
+  })
 })

@@ -1,7 +1,8 @@
 import { ITokenGenerator } from '@data/protocols/cryptography/token-generator';
+import { ITokenVerifier } from '@data/protocols/cryptography/token-verifier';
 import jwt from 'jsonwebtoken'
 
-export class JwtAdapter implements ITokenGenerator{
+export class JwtAdapter implements ITokenGenerator, ITokenVerifier{
   constructor(
     private readonly secret: string
   ) {}
@@ -11,4 +12,7 @@ export class JwtAdapter implements ITokenGenerator{
     return accessToken
   }
 
+  async verify(ciphertext: string): Promise<any> {
+    return jwt.verify(ciphertext, this.secret)
+  }
 }
