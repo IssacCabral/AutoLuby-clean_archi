@@ -47,7 +47,7 @@ const makeFindUserByEmailRepository = (): IFindUserByEmailRepository => {
 
 const makeTokenGenerator = (): ITokenGenerator => {
   class TokenGeneratorStub implements ITokenGenerator{
-    async generate(id: string): Promise<string>{
+    async generate(value: string): Promise<string>{
       return 'any_token'
     }
   }
