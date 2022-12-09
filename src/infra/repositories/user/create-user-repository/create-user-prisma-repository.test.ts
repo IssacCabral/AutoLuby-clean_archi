@@ -38,4 +38,13 @@ describe('CreateUser Prisma Repository', () => {
     expect(user.id).toBeTruthy()
     expect(user.roles[0].type).toBe("Employee")
   })
+
+  test('Should omit password when returning created user', async () => {
+    const sut = makeSut()
+    const userData = makeCreateUserData()
+    const user = await sut.create(userData)
+    expect(user).toBeTruthy()
+    expect(user.id).toBeTruthy()
+    expect(user.password).toBeUndefined
+  })
 })
