@@ -21,11 +21,7 @@ describe('FindUserByCpf Prisma Repository', () => {
     await prisma.user.deleteMany()
   })
 
-  afterAll(async () => {
-    await prisma.user.deleteMany()
-  })
-
-  beforeAll(async () => {
+  afterEach(async () => {
     await prisma.user.deleteMany()
   })
 
