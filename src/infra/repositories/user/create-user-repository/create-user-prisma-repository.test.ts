@@ -17,7 +17,19 @@ const makeSut = (): CreateUserPrismaRepository => {
 }
 
 describe('CreateUser Prisma Repository', () => {
+  beforeAll(async () => {
+    await prisma.user.deleteMany()
+  })
+  
+  afterAll(async () => {
+    await prisma.user.deleteMany()
+  })
+
   beforeEach(async () => {
+    await prisma.user.deleteMany()
+  })
+
+  afterEach(async () => {
     await prisma.user.deleteMany()
   })
 

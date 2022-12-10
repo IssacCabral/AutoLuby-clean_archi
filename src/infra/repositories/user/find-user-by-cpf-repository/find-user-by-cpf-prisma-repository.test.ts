@@ -17,6 +17,14 @@ const makeSut = (): FindUserByCpfPrismaRepository => {
 }
 
 describe('FindUserByCpf Prisma Repository', () => {
+  beforeAll(async () => {
+    await prisma.user.deleteMany()
+  })
+  
+  afterAll(async () => {
+    await prisma.user.deleteMany()
+  })
+
   beforeEach(async () => {
     await prisma.user.deleteMany()
   })

@@ -4,7 +4,7 @@ import {prisma} from '@infra/prisma/prisma-client'
 
 export class FindUserByEmailPrismaRepository implements IFindUserByEmailRepository{
   async findByEmail(email: string): Promise<UserModel> {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email
       },
@@ -12,5 +12,6 @@ export class FindUserByEmailPrismaRepository implements IFindUserByEmailReposito
         roles: true
       }
     })
+    return user
   }
 }
