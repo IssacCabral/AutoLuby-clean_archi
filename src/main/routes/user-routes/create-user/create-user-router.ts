@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import { ExpressAdapter } from "@main/adapters/express-routes-adapter";
-import { makeCreateUserController } from "@factories/controllers/create-user/create-user-controller-factory";
+import { makeCreateUserController } from "@factories/controllers/user/create-user-controller-factory";
 
 const createUserRoutes = Router()
 

@@ -1,5 +1,5 @@
-import { CreateVehicleController } from "@controllers/create-vehicle/create-vehicle-controller"
-import { makeDbCreateVehicle } from "@factories/usecases/db-create-vehicle-factory"
+import { CreateVehicleController } from "@controllers/vehicle-controllers/create-vehicle/create-vehicle-controller"
+import { makeDbCreateVehicle } from "@factories/usecases/vehicle/db-create-vehicle-factory"
 import {makeCreateVehicleValidation} from './create-vehicle-validation-factory'
 
 export const makeCreateVehicleController = (): CreateVehicleController => {
