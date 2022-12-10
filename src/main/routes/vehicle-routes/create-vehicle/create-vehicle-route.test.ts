@@ -4,7 +4,19 @@ import {prisma} from '@infra/prisma/prisma-client'
 import assert from 'assert'
 
 describe('CreateVehicle route', () => {
+  beforeAll(async () => {
+    await prisma.$connect()
+  })
+  
+  afterAll(async () => {
+    await prisma.$disconnect()
+  })
+  
   beforeEach(async () => {
+    await prisma.vehicle.deleteMany()
+  })
+
+  afterEach(async () => {
     await prisma.vehicle.deleteMany()
   })
 

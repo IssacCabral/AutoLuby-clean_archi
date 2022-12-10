@@ -18,13 +18,13 @@ const makeSut = (): FindUserByEmailPrismaRepository => {
 
 describe('FindUserByEmail Prisma Repository', () => {
   beforeAll(async () => {
-    await prisma.user.deleteMany()
+    await prisma.$connect()
   })
   
   afterAll(async () => {
-    await prisma.user.deleteMany()
+    await prisma.$disconnect()
   })
-
+  
   beforeEach(async () => {
     await prisma.user.deleteMany()
   })

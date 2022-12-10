@@ -17,11 +17,11 @@ const makeCreateUserParams = () => {
 
 describe('Login route', () => {
   beforeAll(async () => {
-    await prisma.user.deleteMany()
+    await prisma.$connect()
   })
   
   afterAll(async () => {
-    await prisma.user.deleteMany()
+    await prisma.$disconnect()
   })
 
   beforeEach(async () => {
@@ -34,8 +34,9 @@ describe('Login route', () => {
  
   test('Should return 200 on login', async () => {
     const userData = makeCreateUserParams()
-    const hashedPassword = await bcrypt.hash(userData.password, 10)
-    const user = await prisma.user.create({data: {...userData, password: hashedPassword}})
+    const hashedPassword = await bcrypt.hash(userData.password, 12)
+    const userWithHashedPassword = Object.assign({}, userData, {password: hashedPassword})
+    await prisma.user.create({data: {...userWithHashedPassword}})
     await request(app)
       .post('/login')
       .send({
@@ -50,8 +51,9 @@ describe('Login route', () => {
 
   test('Should return 400 if invalid email is provided', async () => {
     const userData = makeCreateUserParams()
-    const hashedPassword = await bcrypt.hash(userData.password, 10)
-    const user = await prisma.user.create({data: {...userData, password: hashedPassword}})
+    const hashedPassword = await bcrypt.hash(userData.password, 12)
+    const userWithHashedPassword = Object.assign({}, userData, {password: hashedPassword})
+    await prisma.user.create({data: {...userWithHashedPassword}})
     await request(app)
       .post('/login')
       .send({
@@ -66,8 +68,9 @@ describe('Login route', () => {
 
   test('Should return 401 if invalid credentials is provided', async () => {
     const userData = makeCreateUserParams()
-    const hashedPassword = await bcrypt.hash(userData.password, 10)
-    const user = await prisma.user.create({data: {...userData, password: hashedPassword}})
+    const hashedPassword = await bcrypt.hash(userData.password, 12)
+    const userWithHashedPassword = Object.assign({}, userData, {password: hashedPassword})
+    await prisma.user.create({data: {...userWithHashedPassword}})
     await request(app)
       .post('/login')
       .send({
@@ -76,7 +79,6 @@ describe('Login route', () => {
       })
       .expect(401)
       .expect((res) => {
-        console.log(res.body)
         if(!res.body.hasOwnProperty('error')) throw new Error('Expected error')
       })
   })
