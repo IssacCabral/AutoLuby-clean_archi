@@ -5,6 +5,7 @@ import loginRouter from "./login-routes/login-router";
 import findVehicleByChassisRouter from "./vehicle-routes/find-vehicle-by-chassis/find-vehicle-by-chassis-router";
 import findVehiclesRouter from "./vehicle-routes/find-vehicles/find-vehicles-router";
 import updateVehicleRouter from "./vehicle-routes/update-vehicle/update-vehicle-router";
+import deleteVehicleRouter from "./vehicle-routes/delete-vehicle/delete-vehicle-router";
 
 const mainRouter = Router()
 
@@ -15,3 +16,4 @@ export default mainRouter
                 .use(findVehicleByChassisRouter)
                 .use(findVehiclesRouter)
                 .use(updateVehicleRouter)
+                .use(deleteVehicleRouter)
