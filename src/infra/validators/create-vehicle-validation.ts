@@ -5,5 +5,4 @@ export class CreateVehicleValidator implements IValidation{
   validate(input: any): Error | null{
     return null
   }
-
 }
