@@ -23,7 +23,7 @@ export class DbCreateSale implements ICreateSale{
     const vehicle = await this.findVehicleByIdRepository.findById(params.vehicleId)
     
     if(!vehicle){
-      return new NotFoundError('User')
+      return new NotFoundError('Vehicle')
     }
     if(vehicle.status == "sold"){
       return new VehicleAlreadySoldError()

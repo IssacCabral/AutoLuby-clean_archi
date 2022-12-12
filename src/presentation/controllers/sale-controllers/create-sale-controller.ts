@@ -15,8 +15,7 @@ export class CreateSaleController implements IController {
     try{
       const requiredFields = [
         "userId",
-        "vehicleId",
-        "price"
+        "vehicleId"
       ];
       for(const field of requiredFields){
         if (!Object.keys(httpRequest.body).includes(field)) {
@@ -24,16 +23,15 @@ export class CreateSaleController implements IController {
         }
       }
 
-      const {userId, vehicleId, price} = httpRequest.body
+      const {userId, vehicleId} = httpRequest.body
       
-      const sale = await this.createSale.create({userId, vehicleId, price: Number(price)})
+      const sale = await this.createSale.create({userId, vehicleId})
       if(sale instanceof NotFoundError){
         return notFound(sale)
       }
       if(sale instanceof VehicleAlreadySoldError){
         return badRequest(sale)
       }
-
       return created(sale)
     } catch(error){
       return serverError(error)

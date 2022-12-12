@@ -6,6 +6,8 @@ import findVehicleByChassisRouter from "./vehicle-routes/find-vehicle-by-chassis
 import findVehiclesRouter from "./vehicle-routes/find-vehicles/find-vehicles-router";
 import updateVehicleRouter from "./vehicle-routes/update-vehicle/update-vehicle-router";
 import deleteVehicleRouter from "./vehicle-routes/delete-vehicle/delete-vehicle-router";
+import createSaleRouter from "./sale-routes/create-sale/create-sale-router";
+import findSalesByUserRouter from "./sale-routes/find-sales-by-user/find-sales-by-user-router";
 
 const mainRouter = Router()
 
@@ -17,3 +19,5 @@ export default mainRouter
                 .use(findVehiclesRouter)
                 .use(updateVehicleRouter)
                 .use(deleteVehicleRouter)
+                .use(createSaleRouter)
+                .use(findSalesByUserRouter)
